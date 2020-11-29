@@ -25,6 +25,10 @@ namespace napper_be
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ISessionStorage>(storage => new FileSessionStorage(@"C:\Temp\Sessions\"));
+            services.AddScoped<IUserStorage>(storage => new FileUserStorage(@"C:\Temp\Users\"));
+            // services.AddScoped<ISessionStorage>(storage => new DBSessionStorage(Configuration));
+            // services.AddScoped<IUserStorage>(storage => new DBUserStorage(Configuration));
             services.AddControllers();
         }
 
