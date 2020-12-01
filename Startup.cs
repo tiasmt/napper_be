@@ -25,6 +25,16 @@ namespace napper_be
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.WithOrigins("https://localhost:8080").AllowAnyHeader().AllowAnyMethod();
+                        builder.WithOrigins("http://localhost:8080").AllowAnyHeader().AllowAnyMethod();
+                    });
+            });
+            
             services.AddScoped<ISessionStorage>(storage => new FileSessionStorage(@"C:\Temp\Sessions\"));
             services.AddScoped<IUserStorage>(storage => new FileUserStorage(@"C:\Temp\Users\"));
             // services.AddScoped<ISessionStorage>(storage => new DBSessionStorage(Configuration));
@@ -43,6 +53,8 @@ namespace napper_be
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
