@@ -21,10 +21,14 @@ namespace napper_be.Controllers
         }
 
         [HttpPost("register")]
-        public string UserRegister([FromBody] User user)
+        public IActionResult UserRegister(User user)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             _user.Register(user);
-            return null;
+            return CreatedAtAction("RegisteredUser", new { id = _user.Id }, user);
         }
 
         [HttpGet("user/{username}")]
