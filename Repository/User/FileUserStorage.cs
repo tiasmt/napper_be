@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace napper_be
@@ -24,6 +25,7 @@ namespace napper_be
 
         public void Create(User user)
         {
+            user.Id = Directory.EnumerateFiles(_directoryPath, "*.usr", SearchOption.AllDirectories).Count() + 1; 
             using (var file = new StreamWriter(File.Create(_directoryPath + user.Username + ".usr")))
             {
                 file.WriteLine($"{UserId}{user.Id}");
