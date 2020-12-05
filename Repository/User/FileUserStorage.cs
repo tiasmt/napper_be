@@ -32,7 +32,7 @@ namespace napper_be
                 file.WriteLine($"{Username}{user.Username}");
                 file.WriteLine($"{Name}{user.Name}");
                 file.WriteLine($"{Surname}{user.Surname}");
-                file.WriteLine($"{Password}{user.Password}");
+                file.WriteLine($"{Password}{user.HashedPassword}");
                 file.WriteLine($"{Salt}{Convert.ToBase64String(user.Salt)}");
                 file.WriteLine($"{Email}{user.Email}");
             }

@@ -26,13 +26,12 @@ namespace napper_be.Controllers
             if(userId > 0)
             {
                 _session.Open(userId);
+                return Ok();
             }
             else
             {
-                
+                return NotFound();
             }
-            
-            return Ok();
         }
 
         [HttpPost("logout")]
