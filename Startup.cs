@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using napper_be.Middleware;
 
 namespace napper_be
 {
@@ -49,6 +50,8 @@ namespace napper_be
             {
                 app.UseDeveloperExceptionPage();
             }
+            // Hook in the global error-handling middleware
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
             app.UseHttpsRedirection();
 
