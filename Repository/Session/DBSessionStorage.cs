@@ -4,8 +4,9 @@ using System.Data;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using napper_be.Models;
 
-namespace napper_be
+namespace napper_be.Repository
 {
     public class DBSessionStorage : ISessionStorage
     {

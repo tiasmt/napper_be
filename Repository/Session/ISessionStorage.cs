@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using napper_be.Models;
 
-namespace napper_be
+namespace napper_be.Repository
 {
     public interface ISessionStorage
     {

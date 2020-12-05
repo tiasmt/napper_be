@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using napper_be.Models;
 
-namespace napper_be
+namespace napper_be.Repository
 {
     public class FileSessionStorage : ISessionStorage
     {
@@ -43,12 +44,13 @@ namespace napper_be
                 var fileStream = new FileStream(file, FileMode.Open);
                 using (var reader = new StreamReader(fileStream))
                 {
-                    var sessionIdFromFile = int.Parse(reader.ReadLine().Substring(SessionId.Length));
-                    var sessionGUIDFromFile = reader.ReadLine().Substring(SessionGUID.Length);
-                    var userIdFromFile = int.Parse(reader.ReadLine().Substring(UserId.Length));
-                    var sessionTimeoutFromFile = int.Parse(reader.ReadLine().Substring(SessionTimeout.Length));
-                    var expirationDateFromFile = DateTime.Parse(reader.ReadLine().Substring(ExpirationDate.Length));
-                    sessions.Add(new Session(sessionIdFromFile, sessionGUIDFromFile, userIdFromFile, sessionTimeoutFromFile, expirationDateFromFile, this));
+                    var session = new Session();
+                    session.SessionId = int.Parse(reader.ReadLine().Substring(SessionId.Length));
+                    session.SessionGUID = reader.ReadLine().Substring(SessionGUID.Length);
+                    session.UserId = int.Parse(reader.ReadLine().Substring(UserId.Length));
+                    session.SessionTimeout = int.Parse(reader.ReadLine().Substring(SessionTimeout.Length));
+                    session.ExpirationDate = DateTime.Parse(reader.ReadLine().Substring(ExpirationDate.Length));
+                    sessions.Add(session);
                 }
             }
             return sessions;
@@ -56,17 +58,16 @@ namespace napper_be
 
         public Session GetBySessionId(string sessionId)
         {
-            Session session;
+            Session session = new Session();
 
             var fileStream = new FileStream(_directoryPath + sessionId + ".ses", FileMode.Open);
             using (var reader = new StreamReader(fileStream))
             {
-                var sessionIdFromFile = int.Parse(reader.ReadLine().Substring(SessionId.Length));
-                var sessionGUIDFromFile = reader.ReadLine().Substring(SessionGUID.Length);
-                var userIdFromFile = int.Parse(reader.ReadLine().Substring(UserId.Length));
-                var sessionTimeoutFromFile = int.Parse(reader.ReadLine().Substring(SessionTimeout.Length));
-                var expirationDateFromFile = DateTime.Parse(reader.ReadLine().Substring(ExpirationDate.Length));
-                session = new Session(sessionIdFromFile, sessionGUIDFromFile, userIdFromFile, sessionTimeoutFromFile, expirationDateFromFile, this);
+                session.SessionId = int.Parse(reader.ReadLine().Substring(SessionId.Length));
+                session.SessionGUID = reader.ReadLine().Substring(SessionGUID.Length);
+                session.UserId = int.Parse(reader.ReadLine().Substring(UserId.Length));
+                session.SessionTimeout = int.Parse(reader.ReadLine().Substring(SessionTimeout.Length));
+                session.ExpirationDate = DateTime.Parse(reader.ReadLine().Substring(ExpirationDate.Length));
             }
 
             return session;
