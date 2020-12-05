@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using napper_be.Repository;
+using napper_be.Services;
+using napper_be.Models;
 
 namespace napper_be.Controllers
 {
@@ -14,14 +17,14 @@ namespace napper_be.Controllers
     {
 
         private readonly Session _session;
-        private readonly User _user;
-        private LoginController _login;
+        private readonly ILoginService _loginService;
+        private readonly IRegisterService _registerService;
+    
 
-        public RegisterController(IUserStorage userStorage, ISessionStorage sessionStorage)
+        public RegisterController(IRegisterService registerService, ILoginService loginService /*, IUserStorage userStorage, ISessionStorage sessionStorage*/)
         {
-            _session = new Session(sessionStorage);
-            _user = new User(userStorage);
-            _login = new LoginController(sessionStorage, userStorage);
+            _registerService = registerService;
+            _loginService = loginService;
         }
 
         [HttpPost("register")]
@@ -31,15 +34,15 @@ namespace napper_be.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _user.Register(user);
-            _login.UserLogin(user);
+            _registerService.Register(user);
+            _loginService.Login(user.Username, user.Password);
             return Ok();
         }
 
         [HttpGet("user/{username}")]
         public string UserGetUser(string username)
         {
-            _user.GetUser(username);
+            _loginService.GetUser(username);
             return null;
         }
     }

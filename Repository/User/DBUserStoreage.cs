@@ -5,6 +5,8 @@ using System.IO;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using napper_be.Repository;
+using napper_be.Models;
 
 namespace napper_be
 {

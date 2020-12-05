@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using napper_be.Middleware;
+using napper_be.Repository;
+using napper_be.Services;
 
 namespace napper_be
 {
@@ -40,6 +42,9 @@ namespace napper_be
             services.AddScoped<IUserStorage>(storage => new FileUserStorage(@"C:\Temp\Users\"));
             // services.AddScoped<ISessionStorage>(storage => new DBSessionStorage(Configuration));
             // services.AddScoped<IUserStorage>(storage => new DBUserStorage(Configuration));
+            services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<IRegisterService, RegisterService>();
             services.AddControllers();
         }
 

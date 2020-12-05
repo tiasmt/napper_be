@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using napper_be.Models;
+using napper_be.Services;
+
 namespace napper_be.Controllers
 {
     [ApiController]
@@ -11,21 +14,23 @@ namespace napper_be.Controllers
     public class LoginController : ControllerBase
     {
 
-        private readonly Session _session;
-        private readonly User _user;
-        public LoginController(ISessionStorage sessionStorage, IUserStorage userStorage)
+        private readonly ISessionService _sessionService;
+        private readonly ILoginService _loginService;
+        private readonly IRegisterService _registerService;
+        public LoginController(ILoginService loginService, IRegisterService registerService, ISessionService sessionService)
         {
-            _session = new Session(sessionStorage);
-            _user = new User(userStorage);            
+             _loginService = loginService;
+             _registerService = registerService; 
+             _sessionService = sessionService;   
         }
 
         [HttpPost("login")]
         public IActionResult UserLogin([FromBody]User user)
         {
-            var userId = _user.Login(user.Username, user.Password);
+            var userId = _loginService.Login(user.Username, user.Password);
             if(userId > 0)
             {
-                _session.Open(userId);
+                _sessionService.Open(userId);
                 return Ok();
             }
             else
