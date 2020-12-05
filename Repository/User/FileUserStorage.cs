@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using napper_be.Exceptions;
 
 namespace napper_be
 {
@@ -68,21 +69,26 @@ namespace napper_be
         public User GetByUsername(string username)
         {
             User user;
-
-            var fileStream = new FileStream(_directoryPath + username + ".usr", FileMode.Open);
-            using (var reader = new StreamReader(fileStream))
+            try
             {
-                var userIdFromFile = int.Parse(reader.ReadLine().Substring(UserId.Length));
-                var usernameFromFile = reader.ReadLine().Substring(Username.Length);
-                var nameFromFile = reader.ReadLine().Substring(Name.Length);
-                var surnameFromFile = reader.ReadLine().Substring(Surname.Length);
-                var passwordFromFile = reader.ReadLine().Substring(Password.Length);
-                var saltFromFile = Convert.FromBase64String(reader.ReadLine().Substring(Salt.Length));
-                var emailFromFile = reader.ReadLine().Substring(Email.Length);
-                user = new User(userIdFromFile, usernameFromFile, nameFromFile, surnameFromFile, passwordFromFile, saltFromFile, emailFromFile, this);
+                var fileStream = new FileStream(_directoryPath + username + ".usr", FileMode.Open);
+                using (var reader = new StreamReader(fileStream))
+                {
+                    var userIdFromFile = int.Parse(reader.ReadLine().Substring(UserId.Length));
+                    var usernameFromFile = reader.ReadLine().Substring(Username.Length);
+                    var nameFromFile = reader.ReadLine().Substring(Name.Length);
+                    var surnameFromFile = reader.ReadLine().Substring(Surname.Length);
+                    var passwordFromFile = reader.ReadLine().Substring(Password.Length);
+                    var saltFromFile = Convert.FromBase64String(reader.ReadLine().Substring(Salt.Length));
+                    var emailFromFile = reader.ReadLine().Substring(Email.Length);
+                    user = new User(userIdFromFile, usernameFromFile, nameFromFile, surnameFromFile, passwordFromFile, saltFromFile, emailFromFile, this);
+                    return user;
+                }
             }
-
-            return user;
+            catch
+            {
+                throw new NotFoundException($"Invalid username / password.");
+            }
         }
 
         public void Update(User user)
