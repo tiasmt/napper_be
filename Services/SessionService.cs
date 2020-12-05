@@ -4,7 +4,7 @@ using napper_be.Repository;
 
 namespace napper_be.Services
 {
-    public class SessionService
+    public class SessionService : ISessionService
     {
         private const int DefaultSessionTimeout = 60;
         private readonly ISessionStorage _storage;
@@ -12,30 +12,6 @@ namespace napper_be.Services
         {
             _storage = storage;
         }
-        // public Session(int sessionTimeout, ISessionStorage storage)
-        // {
-        //     SessionTimeout = sessionTimeout;
-        //     ExpirationDate = DateTime.Now.AddSeconds(sessionTimeout);
-        //     _storage = storage;
-        // }
-
-        // public Session(int sessionId, string sessionGUID, int userId, int sessionTimeout, DateTime expirationDate, ISessionStorage storage)
-        // {
-        //     _sessionId = sessionId;
-        //     _sessionGUID = sessionGUID;
-        //     _sessionTimeout = sessionTimeout;
-        //     _expirationDate = expirationDate;
-        //     _userId = userId;
-        //     _storage = storage;
-        // }
-
-        // public Session(ISessionStorage storage)
-        // {
-        //     SessionTimeout = DefaultSessionTimeout;
-        //     ExpirationDate = DateTime.Now.AddSeconds(SessionTimeout);
-        //     _storage = storage;
-        // }
-
         public Session Open(int userId)
         {
             var session = new Session();

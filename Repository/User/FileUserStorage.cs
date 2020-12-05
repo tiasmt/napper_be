@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using napper_be.Exceptions;
+using napper_be.Repository;
+using napper_be.Models;
 
-namespace napper_be
+namespace napper_be.Repository
 {
     public class FileUserStorage : IUserStorage
     {
@@ -52,14 +54,15 @@ namespace napper_be
                 var fileStream = new FileStream(file, FileMode.Open);
                 using (var reader = new StreamReader(fileStream))
                 {
-                    var userIdFromFile = int.Parse(reader.ReadLine().Substring(UserId.Length));
-                    var usernameFromFile = reader.ReadLine().Substring(Username.Length);
-                    var nameFromFile = reader.ReadLine().Substring(Name.Length);
-                    var surnameFromFile = reader.ReadLine().Substring(Surname.Length);
-                    var passwordFromFile = reader.ReadLine().Substring(Password.Length);
-                    var saltFromFile = Convert.FromBase64String(reader.ReadLine().Substring(Salt.Length));
-                    var emailFromFile = reader.ReadLine().Substring(Email.Length);
-                    users.Add(new User(userIdFromFile, usernameFromFile, nameFromFile, surnameFromFile, passwordFromFile, saltFromFile, emailFromFile, this));
+                    var user = new User();
+                    user.Id = int.Parse(reader.ReadLine().Substring(UserId.Length));
+                    user.Username = reader.ReadLine().Substring(Username.Length);
+                    user.Name = reader.ReadLine().Substring(Name.Length);
+                    user.Surname = reader.ReadLine().Substring(Surname.Length);
+                    user.HashedPassword = reader.ReadLine().Substring(Password.Length);
+                    user.Salt = Convert.FromBase64String(reader.ReadLine().Substring(Salt.Length));
+                    user.Email = reader.ReadLine().Substring(Email.Length);
+                    users.Add(user);
                 }
             }
             return users;
@@ -68,20 +71,19 @@ namespace napper_be
 
         public User GetByUsername(string username)
         {
-            User user;
+            User user = new User();
             try
             {
                 var fileStream = new FileStream(_directoryPath + username + ".usr", FileMode.Open);
                 using (var reader = new StreamReader(fileStream))
                 {
-                    var userIdFromFile = int.Parse(reader.ReadLine().Substring(UserId.Length));
-                    var usernameFromFile = reader.ReadLine().Substring(Username.Length);
-                    var nameFromFile = reader.ReadLine().Substring(Name.Length);
-                    var surnameFromFile = reader.ReadLine().Substring(Surname.Length);
-                    var passwordFromFile = reader.ReadLine().Substring(Password.Length);
-                    var saltFromFile = Convert.FromBase64String(reader.ReadLine().Substring(Salt.Length));
-                    var emailFromFile = reader.ReadLine().Substring(Email.Length);
-                    user = new User(userIdFromFile, usernameFromFile, nameFromFile, surnameFromFile, passwordFromFile, saltFromFile, emailFromFile, this);
+                    user.Id = int.Parse(reader.ReadLine().Substring(UserId.Length));
+                    user.Username = reader.ReadLine().Substring(Username.Length);
+                    user.Name = reader.ReadLine().Substring(Name.Length);
+                    user.Surname = reader.ReadLine().Substring(Surname.Length);
+                    user.HashedPassword = reader.ReadLine().Substring(Password.Length);
+                    user.Salt = Convert.FromBase64String(reader.ReadLine().Substring(Salt.Length));
+                    user.Email = reader.ReadLine().Substring(Email.Length);
                     return user;
                 }
             }
