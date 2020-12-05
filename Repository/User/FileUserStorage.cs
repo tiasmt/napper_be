@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using napper_be.Exceptions;
 
@@ -25,13 +26,14 @@ namespace napper_be
 
         public void Create(User user)
         {
+            user.Id = Directory.EnumerateFiles(_directoryPath, "*.usr", SearchOption.AllDirectories).Count() + 1; 
             using (var file = new StreamWriter(File.Create(_directoryPath + user.Username + ".usr")))
             {
                 file.WriteLine($"{UserId}{user.Id}");
                 file.WriteLine($"{Username}{user.Username}");
                 file.WriteLine($"{Name}{user.Name}");
                 file.WriteLine($"{Surname}{user.Surname}");
-                file.WriteLine($"{Password}{user.Password}");
+                file.WriteLine($"{Password}{user.HashedPassword}");
                 file.WriteLine($"{Salt}{Convert.ToBase64String(user.Salt)}");
                 file.WriteLine($"{Email}{user.Email}");
             }

@@ -10,6 +10,7 @@ namespace napper_be
         private string _surname;
         private string _username;
         private string _password;
+        private string _hashedPassword;
         private string _email;
         private byte[] _salt;
 
@@ -18,6 +19,7 @@ namespace napper_be
         public string Surname { get => _surname; set => _surname = value; }
         public string Username { get => _username; set => _username = value; }
         public string Password { get => _password; set => _password = value; }
+        public string HashedPassword { get => _hashedPassword; set => _hashedPassword = value; }
         public string Email { get => _email; set => _email = value; }
         public byte[] Salt { get => _salt; set => _salt = value; }
 
@@ -40,7 +42,7 @@ namespace napper_be
             _name = name;
             _surname = surname;
             _username = username;
-            _password = password;
+            _hashedPassword = password;
             _email = email;
             _storage = storage;
             _salt = salt;
@@ -50,7 +52,7 @@ namespace napper_be
         {
             var user = _storage.GetByUsername(username);
             var hashedPassword = PasswordUtils.HashPassword(user.Salt, password);
-            if (hashedPassword == user.Password)
+            if (hashedPassword == user.HashedPassword)
             {
                 return user.Id;
             }
@@ -66,7 +68,7 @@ namespace napper_be
             {
                 //Create the salt value with a cryptographic PRNG:
                 new RNGCryptoServiceProvider().GetBytes(user.Salt = new byte[16]);
-                user.Password = PasswordUtils.HashPassword(user.Salt, user.Password);
+                user.HashedPassword = PasswordUtils.HashPassword(user.Salt, user.Password);
                 _storage.Create(user);
                 return true;
             }

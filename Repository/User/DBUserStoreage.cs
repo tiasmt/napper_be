@@ -30,7 +30,7 @@ namespace napper_be
                     cmd.Parameters.AddWithValue("email", user.Email);
                     cmd.Parameters.AddWithValue("name", user.Name);
                     cmd.Parameters.AddWithValue("surname", user.Surname);
-                    cmd.Parameters.AddWithValue("password", user.Password);
+                    cmd.Parameters.AddWithValue("password", user.HashedPassword);
                     cmd.Parameters.AddWithValue("salt", Convert.ToBase64String(user.Salt));
                     cmd.ExecuteNonQuery();
                 }
