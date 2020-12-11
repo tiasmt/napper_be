@@ -4,7 +4,7 @@ using System.Data;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using napper_be.Repository;
-using napper_be.Models;
+using napper_be.Entities;
 
 namespace napper_be
 {

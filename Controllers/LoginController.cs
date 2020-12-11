@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using napper_be.Models;
+using napper_be.Entities;
 using napper_be.Services;
 
 namespace napper_be.Controllers
@@ -22,22 +23,25 @@ namespace napper_be.Controllers
         [HttpPost("login")]
         public IActionResult UserLogin([FromBody]User user)
         {
-            var userId = _loginService.Login(user.Username, user.Password);
-            if(userId > 0)
-            {
-                _sessionService.Open(userId);
-                return Ok();
-            }
-            else
-            {
-                return NotFound();
-            }
+            var response = _loginService.Login(user.Username, user.Password);
+            if(response == null)
+                return BadRequest(new {message = "Username or password is incorrect."});
+           
+            return Ok(response);
         }
 
         [HttpPost("logout")]
         public IActionResult UserLogout()
         {
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("User/{id}/{subcategory}")]
+        public IActionResult GetUser(int id)
+        {
+            var user = _loginService.GetUserById(id);
+            return Ok(user);
         }
     }
 }

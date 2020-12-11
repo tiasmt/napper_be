@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using napper_be.Models;

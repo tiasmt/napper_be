@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using napper_be.Exceptions;
-using napper_be.Models;
+using napper_be.Entities;
 
 namespace napper_be.Repository
 {

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using napper_be.Helpers;
 using napper_be.Middleware;
 using napper_be.Repository;
 using napper_be.Services;
@@ -37,7 +38,8 @@ namespace napper_be
                         builder.WithOrigins("http://localhost:8080").AllowAnyHeader().AllowAnyMethod();
                     });
             });
-            
+            // configure strongly typed settings object
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddScoped<ISessionStorage>(storage => new FileSessionStorage(@"C:\Temp\Sessions\"));
             services.AddScoped<IUserStorage>(storage => new FileUserStorage(@"C:\Temp\Users\"));
             // services.AddScoped<ISessionStorage>(storage => new DBSessionStorage(Configuration));
@@ -57,6 +59,7 @@ namespace napper_be
             }
             // Hook in the global error-handling middleware
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseHttpsRedirection();
 

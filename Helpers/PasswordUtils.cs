@@ -1,7 +1,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace napper_be
+namespace napper_be.Helpers
 {
     public static class PasswordUtils
     {
