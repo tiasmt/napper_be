@@ -8,6 +8,9 @@ using System.Security.Claims;
 using System;
 using napper_be.Entities;
 using napper_be.Exceptions;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
+
 
 namespace napper_be.Services
 {
@@ -15,9 +18,10 @@ namespace napper_be.Services
     {
         private readonly IUserStorage _storage;
         private readonly AppSettings _appSettings;
-        public LoginService(IUserStorage storage)
+        public LoginService(IUserStorage storage, IOptions<AppSettings> appSettings)
         {
             _storage = storage;
+            _appSettings = appSettings.Value;
         }
 
         public AuthenticateResponse Login(string username, string password)
