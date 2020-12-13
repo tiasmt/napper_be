@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using napper_be.Services;
-using napper_be.Models;
+using napper_be.Entities;
 
 namespace napper_be.Controllers
 {
@@ -27,8 +27,8 @@ namespace napper_be.Controllers
                 return BadRequest(ModelState);
             }
             _registerService.Register(user);
-            _loginService.Login(user.Username, user.Password);
-            return Ok();
+            var response = _loginService.Login(user.Username, user.Password);
+            return Ok(response);
         }
 
         [HttpGet("user/{username}")]
