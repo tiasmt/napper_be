@@ -27,8 +27,8 @@ namespace napper_be.Controllers
                 return BadRequest(ModelState);
             }
             _registerService.Register(user);
-            _loginService.Login(user.Username, user.Password);
-            return Ok();
+            var response = _loginService.Login(user.Username, user.Password);
+            return Ok(response);
         }
 
         [HttpGet("user/{username}")]
